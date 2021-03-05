@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   TouchableWithoutFeedback,
@@ -9,35 +9,55 @@ import {
   StatusBar,
   TouchableOpacity,
   StyleSheet,
+  Alert,
+  SafeAreaView
 } from "react-native";
+import Users from "../../services/Users";
 
 function Login({ navigation }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = () => {
+    if (username.trim() === "") {
+      return Alert.alert("Username field cannot be left blank");
+    }
+
+    if (password.trim() === "") {
+      return Alert.alert("Password field cannot be left blank");
+    }
+
+    if (username !== Users.username || password !== Users.password) {
+      return Alert.alert("Your username or password was incorrect");
+    }
+
+    return navigation.navigate("ListWorks");
+  };
+
   return (
-    <View style={{ flex: 1, backgroundColor: "#ffa270" }}>
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={styles.container}>
-          <StatusBar backgroundColor="#c63f17" barStyle="light-content" />
-          <Image
-            source={require("../../images/App-Icon.png")}
-            style={styles.logo}
-          ></Image>
-          <TextInput style={styles.inputBox} placeholder="Username"></TextInput>
-          <TextInput
-            style={styles.inputBox}
-            placeholder="Password"
-            secureTextEntry={true}
-          ></TextInput>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              navigation.navigate("ListWorks");
-            }}
-          >
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
-        </View>
-      </TouchableWithoutFeedback>
-    </View>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={styles.container}>
+        <StatusBar backgroundColor="#c63f17" barStyle="light-content" />
+        <Image
+          source={require("../../images/App-Icon.png")}
+          style={styles.logo}
+        ></Image>
+        <TextInput
+          style={styles.inputBox}
+          placeholder="Username"
+          onChangeText={(text) => setUsername(text)}
+        ></TextInput>
+        <TextInput
+          style={styles.inputBox}
+          placeholder="Password"
+          secureTextEntry={true}
+          onChangeText={(text) => setPassword(text)}
+        ></TextInput>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 const styles = StyleSheet.create({
@@ -45,6 +65,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#ffa270",
   },
   logo: {
     width: 200,

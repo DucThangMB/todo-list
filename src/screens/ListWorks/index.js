@@ -1,11 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
+  TouchableOpacity,
   StatusBar,
-  TouchableHighlight,
   StyleSheet,
+  FlatList,
+  Alert,
 } from "react-native";
+import Header from "../../components/Header";
+import Notes from "../../services/Notes";
+
+function ItemList({ Notes }) {
+  return (
+    <View style={styles.container}>
+      <View style={styles.textContainer}>
+        <Text style={styles.text} numberOfLines={3}>
+          {Notes.note}
+        </Text>
+      </View>
+      <TouchableOpacity
+        style={styles.delButton}
+        onPress={() => Alert.alert("This function is under construction")}
+      >
+        <Text style={styles.delBtnText}>Delete</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
 
 function ListWorks({ navigation }) {
   return (
@@ -16,54 +38,68 @@ function ListWorks({ navigation }) {
       }}
     >
       <StatusBar backgroundColor="#c63f17" barStyle="light-content" />
-      <View style={styles.container}>
-        <Text style={styles.content}>TO DO LIST</Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableHighlight
-          style={styles.button}
-          activeOpacity={0.6}
-          underlayColor="#ffa270"
-          onPress={() => navigation.navigate("Login")}
-        >
-          <Text style={styles.buttonText}>LOG OUT</Text>
-        </TouchableHighlight>
-      </View>
+      <Header></Header>
+      <FlatList
+        data={Notes}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => <ItemList Notes={item}></ItemList>}
+      ></FlatList>
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => Alert.alert("This function is under construction")}
+      >
+        <Text style={styles.addBtnText}>+</Text>
+      </TouchableOpacity>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
-    height: 80,
+    paddingLeft: 10,
+    backgroundColor: "#fff",
+    marginVertical: 10,
+    marginHorizontal: 10,
+    flexDirection: "row",
+    borderRadius: 7,
+    overflow: "hidden",
+  },
+  textContainer: {
+    marginLeft: 10,
+    marginVertical: 10,
+    flex: 1,
+  },
+  text: {
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  delButton: {
+    backgroundColor: "#1b84da",
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 7,
+    padding: 5,
+  },
+  delBtnText: {
+    color: "#fff",
+  },
+  addButton: {
+    position: "absolute",
+    right: "10%",
+    bottom: 30,
+    width: 60,
+    height: 60,
+    borderRadius: 50,
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: "coral",
   },
-  content: {
+  addBtnText: {
+    color: "#fff",
+    fontWeight: "bold",
     textAlign: "center",
-    fontSize: 17,
-    fontWeight: "bold",
-    color: "#fff",
-  },
-  buttonContainer: {
-    height: 450,
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
-  button: {
-    width: 200,
-    height: 50,
-    backgroundColor: "#ff7043",
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical: 10,
-    paddingVertical: 12,
-  },
-  buttonText: {
-    fontSize: 17,
-    fontWeight: "bold",
-    color: "#fff",
+    fontSize: 30,
   },
 });
+
 export default ListWorks;
