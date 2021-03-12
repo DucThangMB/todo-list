@@ -1,33 +1,48 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-} from "react-native";
-import Notes from "../../services/Notes";
+  StatusBar,
+} from 'react-native';
+import Header from '../../components/Header';
+import Works from '../../services/Works';
 
 function AddNotes({ navigation }) {
-  const [getText, setText] = useState("");
-  const [getList, setList] = useState(Notes);
+  const [getText, setText] = useState('');
 
   const addItem = () => {
-    getList.push({ id: Math.random().toString(), note: getText });
-    setText("");
-    return navigation.navigate("ListWorks");
+    var date = new Date();
+    Works.push({
+      id: Math.floor(Math.random() * 1001),
+      note: getText,
+      date:
+        date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate(),
+      status: 'Not done',
+    });
+    setText('');
   };
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.inputBox}
-        placeholder="New note"
-        onChangeText={text => setText(text)}
-      ></TextInput>
-      <TouchableOpacity style={styles.addButton} onPress={addItem}>
-        <Text style={styles.adBtnText}>Add</Text>
-      </TouchableOpacity>
+      <StatusBar backgroundColor="#c63f17" barStyle="light-content" />
+      <Header
+        title="New Note"
+        onBack={() => navigation.navigate('WorkList')}
+      ></Header>
+      <View style={styles.wrapper}>
+        <TextInput
+          style={styles.inputBox}
+          placeholder="New note"
+          onChangeText={(text) => setText(text)}
+          value={getText}
+        ></TextInput>
+        <TouchableOpacity style={styles.addButton} onPress={addItem}>
+          <Text style={styles.adBtnText}>Add</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -35,12 +50,36 @@ function AddNotes({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#ebeaf2',
   },
-  inputBox: {},
-  addButton: {},
-  adBtnText: {},
+  wrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  inputBox: {
+    width: 250,
+    height: 50,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    borderRadius: 12,
+    paddingHorizontal: 20,
+    fontSize: 16,
+    marginVertical: 20,
+  },
+  addButton: {
+    width: 250,
+    height: 50,
+    backgroundColor: 'coral',
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 10,
+    paddingVertical: 12,
+  },
+  adBtnText: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
 });
 
 export default AddNotes;

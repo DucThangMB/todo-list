@@ -1,9 +1,10 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import Login from "../screens/Login";
-import ListWorks from "../screens/ListWorks";
-import AddNotes from "../screens/AddNotes";
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Login from '../screens/Login';
+import WorkList from '../screens/WorkList';
+import AddNotes from '../screens/AddNotes';
+import WorkDetail from '../screens/WorkDetail';
 
 const Stack = createStackNavigator();
 
@@ -12,8 +13,9 @@ function Navigation() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="ListWorks" component={ListWorks} />
+        <Stack.Screen name="WorkList" component={WorkList} />
         <Stack.Screen name="AddNotes" component={AddNotes} />
+        <Stack.Screen name="WorkDetail" component={WorkDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );
