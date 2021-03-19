@@ -3,7 +3,7 @@ const Works = [
         id: 1, 
         note: 'Go to sleep',
         date: '2021/3/8',
-        status: 'Done',
+        status: 'Not done',
     },
     {
         id: 2,

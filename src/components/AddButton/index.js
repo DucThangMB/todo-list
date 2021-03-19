@@ -1,8 +1,9 @@
 import React from 'react';
 import { TouchableHighlight, Text, StyleSheet } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 
-export default function BackButton({ onBackCheck }) {
-  if (onBackCheck === null) {
+export default function AddButton({ onAddCheck }) {
+  if (onAddCheck === null) {
     return null;
   }
 
@@ -11,9 +12,9 @@ export default function BackButton({ onBackCheck }) {
       style={styles.button}
       activeOpacity={0.6}
       underlayColor="#ffa270"
-      onPress={onBackCheck}
+      onPress={onAddCheck}
     >
-      <Text style={styles.buttonText}>Back</Text>
+      <MaterialIcons name="playlist-add" color="#fff" size={30} />
     </TouchableHighlight>
   );
 }
@@ -21,21 +22,15 @@ export default function BackButton({ onBackCheck }) {
 const styles = StyleSheet.create({
   button: {
     position: 'absolute',
-    top: 10,
-    left: 10,
-    width: 70,
-    height: 40,
+    top: '7%',
+    right: 15,
+    width: 50,
+    height: 50,
     backgroundColor: 'coral',
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 10,
-    paddingVertical: 12,
-  },
-  buttonText: {
-    fontSize: 16,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: '#fff',
+    paddingVertical: 11,
   },
 });

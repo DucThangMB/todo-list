@@ -8,7 +8,6 @@ import {
   FlatList,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
 import Header from '../../components/Header';
 import Works from '../../services/Works';
 import Context from '../Context';
@@ -49,27 +48,12 @@ function ItemList({ navigation, Note }) {
   );
 }
 
-function WorkList({ navigation }) {
+function ActiveList({ navigation }) {
   const [context, setContext] = useContext(Context);
-  //const [selectedIndex, setSelectedIndex] = useState(null);
-  //useFocusEffect(
-  //React.useCallback(() => {
-  //setSelectedIndex(10);
-  // Do something when the screen is focused
-  //return () => {
-  //setSelectedIndex(null);
-  // Do something when the screen is unfocused
-  // Useful for cleanup functions
-  //};
-  //}, [])
-  //);
 
   const handleDelete = (data) => {
-    //var index = context.indexOf(data);
-    //Works.splice(index, 1);
     const list = context.filter((item) => item.id !== data.id);
     setContext(list);
-    //setSelectedIndex(Math.floor(Math.random() * 11));
   };
 
   return (
@@ -83,8 +67,7 @@ function WorkList({ navigation }) {
       <Header onAdd={() => navigation.navigate('AddNotes')}></Header>
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={context}
-        //extraData={selectedIndex}
+        data={context.filter((item) => item.status === 'Not done')}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.container}>
@@ -140,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WorkList;
+export default ActiveList;

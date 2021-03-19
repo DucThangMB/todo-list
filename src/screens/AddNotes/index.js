@@ -1,49 +1,77 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
   StyleSheet,
   StatusBar,
+  Alert,
 } from 'react-native';
 import Header from '../../components/Header';
 import Works from '../../services/Works';
+import Context from '../Context';
 
-function AddNotes({ navigation }) {
+function AddNotes({ navigation: { goBack } }) {
   const [getText, setText] = useState('');
+  const [context, setContext] = useContext(Context);
 
-  const addItem = () => {
+  const handleAddItem = () => {
+    if (getText.trim() === '') {
+      return Alert.alert('The note field is blank');
+    }
+
     var date = new Date();
-    Works.push({
-      id: Math.floor(Math.random() * 1001),
-      note: getText,
-      date:
-        date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate(),
-      status: 'Not done',
+    setContext((state) => {
+      return [
+        ...state,
+        ...[
+          {
+            id: date.toString(),
+            note: getText,
+            date:
+              date.getFullYear() +
+              '/' +
+              (date.getMonth() + 1) +
+              '/' +
+              date.getDate(),
+            status: 'Not done',
+          },
+        ],
+      ];
     });
     setText('');
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor="#c63f17" barStyle="light-content" />
-      <Header
-        title="New Note"
-        onBack={() => navigation.navigate('WorkList')}
-      ></Header>
-      <View style={styles.wrapper}>
-        <TextInput
-          style={styles.inputBox}
-          placeholder="New note"
-          onChangeText={(text) => setText(text)}
-          value={getText}
-        ></TextInput>
-        <TouchableOpacity style={styles.addButton} onPress={addItem}>
-          <Text style={styles.adBtnText}>Add</Text>
-        </TouchableOpacity>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={styles.container}>
+        <StatusBar backgroundColor="#c63f17" barStyle="light-content" />
+        <Header title="New Note" onBack={() => goBack()}></Header>
+        <View style={styles.wrapper}>
+          <TextInput
+            style={styles.inputBox}
+            placeholder="New note"
+            onChangeText={(text) => setText(text)}
+            value={getText}
+          ></TextInput>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => setText('')}
+            >
+              <Text style={styles.cancelBtnText}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.addButton} onPress={handleAddItem}>
+              <Text style={styles.addBtnText}>Add</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.footer}></View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -55,6 +83,7 @@ const styles = StyleSheet.create({
   wrapper: {
     justifyContent: 'center',
     alignItems: 'center',
+    paddingTop: 100,
   },
   inputBox: {
     width: 250,
@@ -65,20 +94,48 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginVertical: 20,
   },
-  addButton: {
-    width: 250,
+  buttonContainer: {
+    flexDirection: 'row',
+    marginHorizontal: 16,
+  },
+  cancelButton: {
+    width: 120,
     height: 50,
     backgroundColor: 'coral',
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 10,
+    marginHorizontal: 5,
     paddingVertical: 12,
   },
-  adBtnText: {
+  cancelBtnText: {
     fontSize: 17,
     fontWeight: 'bold',
     color: '#fff',
+  },
+  addButton: {
+    width: 120,
+    height: 50,
+    backgroundColor: 'coral',
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 10,
+    marginHorizontal: 5,
+    paddingVertical: 12,
+  },
+  addBtnText: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: 50,
+    backgroundColor: '#fff',
   },
 });
 

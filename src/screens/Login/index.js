@@ -30,7 +30,7 @@ function Login({ navigation }) {
       return Alert.alert('Your username or password was incorrect');
     }
 
-    return navigation.navigate('WorkList');
+    return navigation.navigate('Home');
   };
 
   return (
